@@ -108,7 +108,12 @@ function CustomizeTaxonomySelector(OriginalComponent) {
       var term_id = Number(RB4T_userinfo.term_id);
 
       if (props.terms.indexOf(term_id) === -1) {
-        props.terms.push(term_id);
+        props.terms.push(term_id); // save data via ajax post.
+
+        var onUpdateTerms = props.onUpdateTerms,
+            taxonomy = props.taxonomy;
+        var termId = parseInt(term_id, 10);
+        onUpdateTerms([termId], taxonomy.rest_base);
       }
 
       return wp.element.createElement(OriginalComponent, props);

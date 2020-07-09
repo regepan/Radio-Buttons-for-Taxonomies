@@ -52,8 +52,8 @@ class WordPress_Radio_Taxonomy {
 		add_filter( 'wp_terms_checklist_args', array( $this, 'filter_terms_checklist_args' ) );
 
 		// Add ajax callback for adding a non-hierarchical term
-		if( Radio_Buttons_for_Taxonomies()->is_wp_version_gte('4.4.0') ){
-			add_action( 'wp_ajax_add-' . $taxonomy, array( $this, 'add_non_hierarchical_term' ), 5 );	
+		if( Auto_Select_Taxonomy()->is_wp_version_gte('4.4.0') ){
+			add_action( 'wp_ajax_add-' . $taxonomy, array( $this, 'add_non_hierarchical_term' ), 5 );
 		}
 
 		// never save more than 1 term
@@ -64,7 +64,7 @@ class WordPress_Radio_Taxonomy {
 		add_action( 'load-edit.php', array( $this, 'make_hierarchical' ) );
 
 		// add nonce to quick edit/bulk edit
-		add_action( 'quick_edit_custom_box', array( $this, 'quick_edit_nonce' ) );	
+		add_action( 'quick_edit_custom_box', array( $this, 'quick_edit_nonce' ) );
 
 	}
 
@@ -108,7 +108,7 @@ class WordPress_Radio_Taxonomy {
 
 	/**
 	 * Callback to set up the metabox
-	 * Mimicks the traditional hierarchical term metabox, but modified with our nonces 
+	 * Mimicks the traditional hierarchical term metabox, but modified with our nonces
 	 *
 	 * @access public
 	 * @param  object $post
@@ -139,18 +139,18 @@ class WordPress_Radio_Taxonomy {
 		wp_nonce_field( 'radio_nonce-' . $tax_name, '_radio_nonce-' . $tax_name );
 
 		?>
-		<div id="taxonomy-<?php echo $tax_name; ?>" class="radio-buttons-for-taxonomies categorydiv">
+		<div id="taxonomy-<?php echo $tax_name; ?>" class="auto_select_taxonomy categorydiv">
 			<ul id="<?php echo $tax_name; ?>-tabs" class="category-tabs">
 				<li class="tabs"><a href="#<?php echo $tax_name; ?>-all"><?php echo $taxonomy->labels->all_items; ?></a></li>
 				<li class="hide-if-no-js"><a href="#<?php echo $tax_name; ?>-pop"><?php echo esc_html( $taxonomy->labels->most_used ); ?></a></li>
 			</ul>
-		
+
 			<div id="<?php echo $tax_name; ?>-pop" class="tabs-panel" style="display: none;">
 				<ul id="<?php echo $tax_name; ?>checklist-pop" class="categorychecklist form-no-clear" >
-					<?php 
+					<?php
 
 						$popular_terms = get_terms( $tax_name, array( 'orderby' => 'count', 'order' => 'DESC', 'number' => 10, 'hierarchical' => false ) );
-						$popular_ids = array(); 
+						$popular_ids = array();
 
 						foreach( $popular_terms as $term ){
 
@@ -179,7 +179,7 @@ class WordPress_Radio_Taxonomy {
 					<?php wp_terms_checklist( $post->ID, array( 'taxonomy' => $tax_name, 'popular_cats' => $popular_ids, 'selected_cats' => array( $single_term_id ) ) ); ?>
 				</ul>
 			</div>
-			
+
 	<?php if ( current_user_can( $taxonomy->cap->edit_terms ) ) : ?>
 			<div id="<?php echo $tax_name; ?>-adder" class="wp-hidden-children">
 				<a id="<?php echo $tax_name; ?>-add-toggle" href="#<?php echo $tax_name; ?>-add" class="hide-if-no-js taxonomy-add-new">
@@ -242,7 +242,7 @@ class WordPress_Radio_Taxonomy {
 					<span id="<?php echo $tax_name; ?>-ajax-response"></span>
 				</p>
 			</div>
-		<?php endif; ?>	
+		<?php endif; ?>
 		</div>
 	<?php
 	}
@@ -285,12 +285,12 @@ class WordPress_Radio_Taxonomy {
 		if ( ! is_null( $_set ) ) $this->set = $_set;
 
 		// give users a chance to disable the no term feature
-		return apply_filters( 'radio-buttons-for-taxonomies-no-term-' . $this->taxonomy, $this->set );
+		return apply_filters( 'auto_select_taxonomy-no-term-' . $this->taxonomy, $this->set );
 	}
 
 	/**
 	 * Turn on/off the terms filter.
-	 * 
+	 *
 	 * Only filter get_terms() in the wp_terms_checklist() function
 	 *
 	 * @access public
@@ -329,16 +329,16 @@ class WordPress_Radio_Taxonomy {
 	function get_terms( $terms, $taxonomies, $args ){
 
 		// only filter terms for radio taxes (except category) and only in the checkbox - need to check $args b/c get_terms() is called multiple times in wp_terms_checklist()
-		if( in_array( $this->taxonomy, ( array ) $taxonomies ) && ! in_array( 'category', $taxonomies ) 
+		if( in_array( $this->taxonomy, ( array ) $taxonomies ) && ! in_array( 'category', $taxonomies )
 			&& isset( $args['fields'] ) && $args['fields'] == 'all' && $this->get_terms_filter() ){
 
 			// remove filter after 1st run
 			remove_filter( current_filter(), __FUNCTION__, 10, 3 );
 
 			// turn the switch OFF
-			$this->set_terms_filter( false ); 
+			$this->set_terms_filter( false );
 
-			$no_term = sprintf( __( apply_filters( 'radio_buttons_for_taxonomies_no_term_selected_text', 'No %s' ), 'radio-buttons-for-taxonomies' ), $this->tax_obj->labels->singular_name );
+			$no_term = sprintf( __( apply_filters( 'radio_buttons_for_taxonomies_no_term_selected_text', 'No %s' ), 'auto_select_taxonomy' ), $this->tax_obj->labels->singular_name );
 
 			$uncategorized = (object) array( 'term_id' => '0', 'slug' => '0', 'name' => $no_term, 'parent' => '0' );
 
@@ -384,7 +384,7 @@ class WordPress_Radio_Taxonomy {
 			if ( ! $cat_id = term_exists( $cat_name, $taxonomy->name ) ) {
 				$cat_id = wp_insert_term( $cat_name, $taxonomy->name );
 			}
-				
+
 			if ( is_wp_error( $cat_id ) ) {
 				continue;
 			}
@@ -430,17 +430,17 @@ class WordPress_Radio_Taxonomy {
 			return $post_id;
 
 		// make sure we're on a supported post type
-		if ( is_array( $this->tax_obj->object_type ) && isset( $_REQUEST['post_type'] ) && ! in_array ( $_REQUEST['post_type'], $this->tax_obj->object_type ) ) 
+		if ( is_array( $this->tax_obj->object_type ) && isset( $_REQUEST['post_type'] ) && ! in_array ( $_REQUEST['post_type'], $this->tax_obj->object_type ) )
 			return $post_id;
 
 		// verify nonce
-		if ( isset( $_POST["_radio_nonce-{$this->taxonomy}"]) && ! wp_verify_nonce( $_REQUEST["_radio_nonce-{$this->taxonomy}"], "radio_nonce-{$this->taxonomy}" ) ) 
+		if ( isset( $_POST["_radio_nonce-{$this->taxonomy}"]) && ! wp_verify_nonce( $_REQUEST["_radio_nonce-{$this->taxonomy}"], "radio_nonce-{$this->taxonomy}" ) )
 			return $post_id;
 
 		// OK, we must be authenticated by now: we need to find and save the data
 		if ( isset( $_REQUEST["radio_tax_input"]["{$this->taxonomy}"] ) ){
 
-			$terms = (array) $_REQUEST["radio_tax_input"]["{$this->taxonomy}"]; 
+			$terms = (array) $_REQUEST["radio_tax_input"]["{$this->taxonomy}"];
 
 			// if category and not saving any terms, set to default
 			if ( 'category' == $this->taxonomy && empty ( $terms ) ) {
@@ -455,7 +455,7 @@ class WordPress_Radio_Taxonomy {
 				wp_set_object_terms( $post_id, $single_term, $this->taxonomy );
 			}
 
-		}		
+		}
 
 		return $post_id;
 	}
@@ -474,7 +474,7 @@ class WordPress_Radio_Taxonomy {
 		$wp_taxonomies[$this->taxonomy]->hierarchical = TRUE;
 	}
 
-		
+
 	/**
 	 * Add nonces to quick edit and bulk edit
 	 *
@@ -486,7 +486,7 @@ class WordPress_Radio_Taxonomy {
 			$this->printNonce = FALSE;
 			wp_nonce_field( 'radio_nonce-' . $this->taxonomy, '_radio_nonce-' . $this->taxonomy );
 		}
-		
+
 	}
 
 

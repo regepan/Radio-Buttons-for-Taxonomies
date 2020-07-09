@@ -1,24 +1,20 @@
 <?php
 /*
- * Plugin Name: 	  Radio Buttons for Taxonomies
- * Plugin URI: 		  http://www.kathyisawesome.com/441/radio-buttons-for-taxonomies
- * Description: 	  Use radio buttons for any taxonomy so users can only select 1 term at a time
- * Version:           2.0.5
- * Author:            helgatheviking
- * Author URI:        https://www.kathyisawesome.com
- * Requires at least: 4.5.0
- * Tested up to:      5.2.4
+ * Plugin Name: 	  Auto Select Taxonomy
+ * Description: 	  管理画面でユーザと紐付いているTaxonomyを自動選択します。Radio_Buttons_for_Taxonomiesの拡張版。https://ja.wordpress.org/plugins/radio-buttons-for-taxonomies/
+ * Version:           0.0.1
+ * Author:            Sasaki Yuto
+ * Requires at least: 5.1.1
+ * Tested up to:      5.1.1
  *
- * Text Domain:       radio-buttons-for-taxonomies
+ * Text Domain:       auto-select-taxonomy
  * Domain Path:       /languages/
  *
- * @package           Radio Buttons for Taxonomies
- * @author            Kathy Darling
- * @copyright         Copyright (c) 2019, Kathy Darling
- * @license           http://opensource.org/licenses/gpl-3.0.php GNU Public License
+ * @package           Auto Select Taxonomy
+ * @author            Sasaki Yuto
+ * @copyright         Copyright (c) 2020, Sasaki Yuto
+ * @license
  *
- * Props to by Stephen Harris http://profiles.wordpress.org/stephenh1988/
- * For his wp.tuts+ tutorial: http://wp.tutsplus.com/tutorials/creative-coding/how-to-use-radio-buttons-with-taxonomies/
  */
 
 // Exit if accessed directly.
@@ -30,9 +26,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Main plugin class.
  *
- * @class    Radio_Buttons_for_Taxonomies
+ * @class Auto_Select_Taxonomy
  */
-class Radio_Buttons_For_Taxonomies {
+class Auto_Select_Taxonomy {
 
 	/**
 	 * Donation URL for USA Women's National Team.
@@ -42,7 +38,7 @@ class Radio_Buttons_For_Taxonomies {
 	*/
 	const DONATE_URL = 'https://www.paypal.com/fundraiser/charity/1451316';
 
-	/* @var obj $instance The single instance of Radio_Buttons_for_Taxonomies.*/
+	/* @var obj $instance The single instance of Auto_Select_Taxonomy.*/
 	protected static $_instance = null;
 
 	/* @var str $version */
@@ -55,14 +51,14 @@ class Radio_Buttons_For_Taxonomies {
 	public $taxonomies = array();
 
 	/**
-	 * Main Radio_Buttons_for_Taxonomies Instance
+	 * Main Auto_Select_Taxonomy Instance
 	 *
-	 * Ensures only one instance of Radio_Buttons_for_Taxonomies is loaded or can be loaded.
+	 * Ensures only one instance of Auto_Select_Taxonomy is loaded or can be loaded.
 	 *
 	 * @since 1.6.0
 	 * @static
-	 * @see Radio_Buttons_for_Taxonomies()
-	 * @return Radio_Buttons_for_Taxonomies - Main instance
+	 * @see Auto_Select_Taxonomy()
+	 * @return Auto_Select_Taxonomy - Main instance
 	 */
 	public static function instance() {
 		if ( is_null( self::$_instance ) ) {
@@ -77,7 +73,7 @@ class Radio_Buttons_For_Taxonomies {
 	 * @since 1.6.0
 	 */
 	public function __clone() {
-		_doing_it_wrong( __FUNCTION__, esc_html__( 'Cloning this object is forbidden.', 'radio-buttons-for-taxonomies' ), '1.6' );
+		_doing_it_wrong( __FUNCTION__, esc_html__( 'Cloning this object is forbidden.', 'auto_select_taxonomy' ), '1.6' );
 	}
 
 	/**
@@ -86,13 +82,13 @@ class Radio_Buttons_For_Taxonomies {
 	 * @since 1.6.0
 	 */
 	public function __wakeup() {
-		_doing_it_wrong( __FUNCTION__, esc_html__( 'Unserializing instances of this class is forbidden.', 'radio-buttons-for-taxonomies' ), '1.6' );
+		_doing_it_wrong( __FUNCTION__, esc_html__( 'Unserializing instances of this class is forbidden.', 'auto_select_taxonomy' ), '1.6' );
 	}
 
 	/**
-	 * Radio_Buttons_for_Taxonomies Constructor.
+	 * Auto_Select_Taxonomy Constructor.
 	 * @access public
-	 * @return Radio_Buttons_for_Taxonomies
+	 * @return Auto_Select_Taxonomy
 	 * @since  1.0
 	 */
 	public function __construct() {
@@ -144,8 +140,8 @@ class Radio_Buttons_For_Taxonomies {
 	 * @since  1.0
 	 */
 	public function delete_plugin_options() {
-		$options = get_option( 'radio_button_for_taxonomies_options', true );
-		if( isset( $options['delete'] ) && $options['delete'] ) delete_option( 'radio_button_for_taxonomies_options' );
+		$options = get_option( 'auto_select_taxonomy_options', true );
+		if( isset( $options['delete'] ) && $options['delete'] ) delete_option( 'auto_select_taxonomy_options' );
 	}
 
 	/**
@@ -156,7 +152,7 @@ class Radio_Buttons_For_Taxonomies {
 	 * @since  1.0
 	 */
 	public function load_text_domain() {
-		load_plugin_textdomain( 'radio-buttons-for-taxonomies', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+		load_plugin_textdomain( 'auto_select_taxonomy', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 	}
 
 	/**
@@ -184,7 +180,7 @@ class Radio_Buttons_For_Taxonomies {
 	 * @since  1.0
 	 */
 	public function admin_init(){
-		register_setting( 'radio_button_for_taxonomies_options', 'radio_button_for_taxonomies_options', array( $this, 'validate_options' ) );
+		register_setting( 'auto_select_taxonomy_options', 'auto_select_taxonomy_options', array( $this, 'validate_options' ) );
 	}
 
 
@@ -196,7 +192,7 @@ class Radio_Buttons_For_Taxonomies {
 	 * @since  1.0
 	 */
 	public function add_options_page() {
-		add_options_page(__( 'Radio Buttons for Taxonomies Options Page', 'radio-buttons-for-taxonomies' ), __( 'Radio Buttons for Taxonomies', 'radio-buttons-for-taxonomies' ), 'manage_options', 'radio-buttons-for-taxonomies', array( $this,'render_form' ) );
+		add_options_page(__( 'Auto Select Taxonomy Options Page', 'auto_select_taxonomy' ), __( 'Auto Select Taxonomy', 'auto_select_taxonomy' ), 'manage_options', 'auto_select_taxonomy', array( $this,'render_form' ) );
 	}
 
 	/**
@@ -300,7 +296,7 @@ class Radio_Buttons_For_Taxonomies {
 		) );
 
 		$result = $wpdb->get_row( $query );
-		
+
 		return array(
 			"isAdministrator" => ( array_search( "administrator", $user->roles ) !== false ) ? true : false,
 			"user_id"         => $user->ID,
@@ -322,7 +318,7 @@ class Radio_Buttons_For_Taxonomies {
 	 */
 	public function add_action_links( $links, $file ) {
 
-		$plugin_link = '<a href="' . admin_url( 'options-general.php?page=radio-buttons-for-taxonomies' ) . '">' . esc_html__( 'Settings', 'radio-buttons-for-taxonomies' ) . '</a>';
+		$plugin_link = '<a href="' . admin_url( 'options-general.php?page=auto_select_taxonomy' ) . '">' . esc_html__( 'Settings', 'auto_select_taxonomy' ) . '</a>';
 		// make the 'Settings' link appear first
 		array_unshift( $links, $plugin_link );
 
@@ -339,7 +335,7 @@ class Radio_Buttons_For_Taxonomies {
 	 */
 	public function add_meta_links( $plugin_meta, $plugin_file ) {
 		if( $plugin_file == plugin_basename(__FILE__) ){
-			$plugin_meta[] = '<a class="dashicons-before dashicons-awards" href="' . self::DONATE_URL . '" target="_blank">' . __( 'Donate', 'radio-buttons-for-taxonomies' ) . '</a>';
+			$plugin_meta[] = '<a class="dashicons-before dashicons-awards" href="' . self::DONATE_URL . '" target="_blank">' . __( 'Donate', 'auto_select_taxonomy' ) . '</a>';
 		}
 		return $plugin_meta;
 	}
@@ -376,7 +372,7 @@ class Radio_Buttons_For_Taxonomies {
 	 * @return bool
 	 */
 	public function is_version( $version = '4.4.0' ) {
-		_deprecated_function( __FUNCTION__, '2.0.0', 'Radio_Buttons_for_Taxonomies::is_wp_version_gte()' );
+		_deprecated_function( __FUNCTION__, '2.0.0', 'Auto_Select_Taxonomy::is_wp_version_gte()' );
 		return ! $this->is_wp_version_gte( $version );
 	}
 
@@ -408,7 +404,7 @@ class Radio_Buttons_For_Taxonomies {
 				'taxonomies' => array(),
 				'delete'     => 0,
 			);
-			$this->options = wp_parse_args( get_option( 'radio_button_for_taxonomies_options', true ), $defaults );
+			$this->options = wp_parse_args( get_option( 'auto_select_taxonomy_options', true ), $defaults );
 
 		}
 
@@ -435,7 +431,7 @@ class Radio_Buttons_For_Taxonomies {
 	 */
 	public function multilingualpress_support( Array $taxonomies ) {
 
-		$remote_options = get_option( 'radio_button_for_taxonomies_options', array() );
+		$remote_options = get_option( 'auto_select_taxonomy_options', array() );
 
 		if ( empty( $remote_options['taxonomies'] ) )
 			return $taxonomies;
@@ -453,11 +449,11 @@ class Radio_Buttons_For_Taxonomies {
  * Returns the main instance of WC to prevent the need to use globals.
  *
  * @since  1.6
- * @return Radio_Buttons_for_Taxonomies
+ * @return Auto_Select_Taxonomy
  */
-function radio_buttons_for_taxonomies() {
-	return Radio_Buttons_for_Taxonomies::instance();
+function auto_select_taxonomy() {
+	return Auto_Select_Taxonomy::instance();
 }
 
 // Global for backwards compatibility.
-$GLOBALS['Radio_Buttons_for_Taxonomies'] = radio_buttons_for_taxonomies();
+$GLOBALS['Auto_Select_Taxonomy'] = auto_select_taxonomy();

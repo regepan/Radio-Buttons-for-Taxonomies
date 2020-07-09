@@ -11,6 +11,11 @@ function CustomizeTaxonomySelector( OriginalComponent ) {
 
       if (props.terms.indexOf(term_id) === -1) {
         props.terms.push(term_id);
+
+        // save data via ajax post.
+        const { onUpdateTerms, taxonomy } = props;
+        const termId = parseInt( term_id, 10 );
+        onUpdateTerms( [ termId ], taxonomy.rest_base );
       }
 
       return wp.element.createElement(

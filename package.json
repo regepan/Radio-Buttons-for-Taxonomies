@@ -1,15 +1,15 @@
 {
-  "name": "radio-buttons-for-taxonomies",
+  "name": "auto_select_taxonomy",
   "author": "helgatheviking",
   "version": "2.0.5",
   "description": "Use radio buttons for any taxonomy so users can only select 1 term at a time",
   "repository": {
     "type": "git",
-    "url": "https://github.com/helgatheviking/radio-buttons-for-taxonomies"
+    "url": "https://github.com/helgatheviking/auto_select_taxonomy"
   },
   "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/helgatheviking/radio-buttons-for-taxonomies/issues"
+    "url": "https://github.com/helgatheviking/auto_select_taxonomy/issues"
   },
   "scripts": {
     "build": "wp-scripts build",

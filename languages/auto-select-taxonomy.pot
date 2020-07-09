@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Radio Buttons for Taxonomies package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Radio Buttons for Taxonomies 2.0.5\n"
+"Project-Id-Version: Auto Select Taxonomy 2.0.5\n"
 "Report-Msgid-Bugs-To: "
 "https://wordpress.org/support/plugin/Radio-Buttons-for-Taxonomies\n"
 "POT-Creation-Date: 2020-04-20 01:21:04+00:00\n"
@@ -20,7 +20,7 @@ msgid "+ %s"
 msgstr ""
 
 #. Plugin Name of the plugin/theme
-msgid "Radio Buttons for Taxonomies"
+msgid "Auto Select Taxonomy"
 msgstr ""
 
 #: inc/plugin-options.php:18
@@ -48,7 +48,7 @@ msgid "Unserializing instances of this class is forbidden."
 msgstr ""
 
 #: radio-buttons-for-taxonomies.php:201
-msgid "Radio Buttons for Taxonomies Options Page"
+msgid "Auto Select Taxonomy Options Page"
 msgstr ""
 
 #: radio-buttons-for-taxonomies.php:299
@@ -60,7 +60,7 @@ msgid "Donate"
 msgstr ""
 
 #. Plugin URI of the plugin/theme
-msgid "http://www.kathyisawesome.com/441/radio-buttons-for-taxonomies"
+msgid "http://www.kathyisawesome.com/441/auto_select_taxonomy"
 msgstr ""
 
 #. Description of the plugin/theme

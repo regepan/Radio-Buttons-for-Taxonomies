@@ -15,7 +15,7 @@
 		rowData = $('#inline_'+ post_id);
 
 		// hierarchical taxonomies (we're treating all radio taxes as hierarchical)
-		$('.post_category', rowData).each(function(){ 
+		$('.post_category', rowData).each(function(){
 
 			var taxonomy;
 			var term_ids = $(this).text();
@@ -48,7 +48,7 @@
 					$(this).prev( 'input' ).remove(); // remove the hidden tax_input input, prevents WP from running its default save routine
 				}
 			});
-		} 
+		}
 	});
 
 
@@ -57,7 +57,7 @@
 	 */
 
 	// taxonomy metaboxes
-	$('.radio-buttons-for-taxonomies').each( function(){
+	$('.auto_select_taxonomy').each( function(){
 		var this_id = $(this).attr('id'), taxonomyParts, taxonomy;
 
 		taxonomyParts = this_id.split('-');

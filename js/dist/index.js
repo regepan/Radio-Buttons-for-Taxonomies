@@ -104,7 +104,15 @@ __webpack_require__.r(__webpack_exports__);
 function CustomizeTaxonomySelector(OriginalComponent) {
   return function (props) {
     // props.slug is the taxonomy (slug)
-    if (RB4Tl18n.radio_taxonomies.indexOf(props.slug) >= 0) {
+    if (RB4T_userinfo.isAdministrator) {
+      var term_id = Number(RB4T_userinfo.term_id);
+
+      if (props.terms.indexOf(term_id) === -1) {
+        props.terms.push(term_id);
+      }
+
+      return wp.element.createElement(OriginalComponent, props);
+    } else if (RB4Tl18n.radio_taxonomies.indexOf(props.slug) >= 0) {
       return wp.element.createElement(_radio_term_selector__WEBPACK_IMPORTED_MODULE_0__["default"], props);
     } else {
       return wp.element.createElement(OriginalComponent, props);
@@ -134,14 +142,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime/helpers/createClass */ "./node_modules/@babel/runtime/helpers/createClass.js");
 /* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "./node_modules/@babel/runtime/helpers/possibleConstructorReturn.js");
-/* harmony import */ var _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "./node_modules/@babel/runtime/helpers/getPrototypeOf.js");
-/* harmony import */ var _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @babel/runtime/helpers/assertThisInitialized */ "./node_modules/@babel/runtime/helpers/assertThisInitialized.js");
-/* harmony import */ var _babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @babel/runtime/helpers/inherits */ "./node_modules/@babel/runtime/helpers/inherits.js");
-/* harmony import */ var _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime/helpers/assertThisInitialized */ "./node_modules/@babel/runtime/helpers/assertThisInitialized.js");
+/* harmony import */ var _babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @babel/runtime/helpers/inherits */ "./node_modules/@babel/runtime/helpers/inherits.js");
+/* harmony import */ var _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "./node_modules/@babel/runtime/helpers/possibleConstructorReturn.js");
+/* harmony import */ var _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "./node_modules/@babel/runtime/helpers/getPrototypeOf.js");
+/* harmony import */ var _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_7__);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_8__);
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! lodash */ "lodash");
@@ -172,6 +180,10 @@ __webpack_require__.r(__webpack_exports__);
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_1___default()(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_7___default()(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_7___default()(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_6___default()(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
 
 /*
  * Modified version of https://github.com/WordPress/gutenberg/blob/master/packages/editor/src/components/post-taxonomies/hierarchical-term-selector.js
@@ -209,25 +221,25 @@ var DEFAULT_QUERY = {
 };
 var MIN_TERMS_COUNT_FOR_FILTER = 8;
 
-var RadioTermSelector =
-/*#__PURE__*/
-function (_Component) {
-  _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_7___default()(RadioTermSelector, _Component);
+var RadioTermSelector = /*#__PURE__*/function (_Component) {
+  _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_5___default()(RadioTermSelector, _Component);
+
+  var _super = _createSuper(RadioTermSelector);
 
   function RadioTermSelector() {
     var _this;
 
     _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_2___default()(this, RadioTermSelector);
 
-    _this = _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_4___default()(this, _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_5___default()(RadioTermSelector).apply(this, arguments));
-    _this.findTerm = _this.findTerm.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_6___default()(_this));
-    _this.onChange = _this.onChange.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_6___default()(_this));
-    _this.onChangeFormName = _this.onChangeFormName.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_6___default()(_this));
-    _this.onChangeFormParent = _this.onChangeFormParent.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_6___default()(_this));
-    _this.onAddTerm = _this.onAddTerm.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_6___default()(_this));
-    _this.onToggleForm = _this.onToggleForm.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_6___default()(_this));
-    _this.setFilterValue = _this.setFilterValue.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_6___default()(_this));
-    _this.sortBySelected = _this.sortBySelected.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_6___default()(_this));
+    _this = _super.apply(this, arguments);
+    _this.findTerm = _this.findTerm.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4___default()(_this));
+    _this.onChange = _this.onChange.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4___default()(_this));
+    _this.onChangeFormName = _this.onChangeFormName.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4___default()(_this));
+    _this.onChangeFormParent = _this.onChangeFormParent.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4___default()(_this));
+    _this.onAddTerm = _this.onAddTerm.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4___default()(_this));
+    _this.onToggleForm = _this.onToggleForm.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4___default()(_this));
+    _this.setFilterValue = _this.setFilterValue.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4___default()(_this));
+    _this.sortBySelected = _this.sortBySelected.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4___default()(_this));
     _this.state = {
       loading: true,
       availableTermsTree: [],
@@ -340,7 +352,7 @@ function (_Component) {
         if (errorCode === 'term_exists') {
           // search the new category created since last fetch
           _this2.addRequest = _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_14___default()({
-            path: Object(_wordpress_url__WEBPACK_IMPORTED_MODULE_15__["addQueryArgs"])("/wp/v2/".concat(taxonomy.rest_base), _objectSpread({}, DEFAULT_QUERY, {
+            path: Object(_wordpress_url__WEBPACK_IMPORTED_MODULE_15__["addQueryArgs"])("/wp/v2/".concat(taxonomy.rest_base), _objectSpread(_objectSpread({}, DEFAULT_QUERY), {}, {
               parent: formParent || 0,
               search: formName
             }))
@@ -755,7 +767,7 @@ function buildTermsTree(flatTerms) {
   var fillWithChildren = function fillWithChildren(terms) {
     return terms.map(function (term) {
       var children = termsByParent[term.id];
-      return _objectSpread({}, term, {
+      return _objectSpread(_objectSpread({}, term), {}, {
         children: children && children.length ? fillWithChildren(children) : []
       });
     });
@@ -766,21 +778,38 @@ function buildTermsTree(flatTerms) {
 
 /***/ }),
 
+/***/ "./node_modules/@babel/runtime/helpers/arrayLikeToArray.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/arrayLikeToArray.js ***!
+  \*****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function _arrayLikeToArray(arr, len) {
+  if (len == null || len > arr.length) len = arr.length;
+
+  for (var i = 0, arr2 = new Array(len); i < len; i++) {
+    arr2[i] = arr[i];
+  }
+
+  return arr2;
+}
+
+module.exports = _arrayLikeToArray;
+
+/***/ }),
+
 /***/ "./node_modules/@babel/runtime/helpers/arrayWithoutHoles.js":
 /*!******************************************************************!*\
   !*** ./node_modules/@babel/runtime/helpers/arrayWithoutHoles.js ***!
   \******************************************************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+var arrayLikeToArray = __webpack_require__(/*! ./arrayLikeToArray */ "./node_modules/@babel/runtime/helpers/arrayLikeToArray.js");
 
 function _arrayWithoutHoles(arr) {
-  if (Array.isArray(arr)) {
-    for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) {
-      arr2[i] = arr[i];
-    }
-
-    return arr2;
-  }
+  if (Array.isArray(arr)) return arrayLikeToArray(arr);
 }
 
 module.exports = _arrayWithoutHoles;
@@ -930,7 +959,7 @@ module.exports = _inherits;
 /***/ (function(module, exports) {
 
 function _iterableToArray(iter) {
-  if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter);
+  if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter);
 }
 
 module.exports = _iterableToArray;
@@ -945,7 +974,7 @@ module.exports = _iterableToArray;
 /***/ (function(module, exports) {
 
 function _nonIterableSpread() {
-  throw new TypeError("Invalid attempt to spread non-iterable instance");
+  throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
 
 module.exports = _nonIterableSpread;
@@ -1006,10 +1035,12 @@ var arrayWithoutHoles = __webpack_require__(/*! ./arrayWithoutHoles */ "./node_m
 
 var iterableToArray = __webpack_require__(/*! ./iterableToArray */ "./node_modules/@babel/runtime/helpers/iterableToArray.js");
 
+var unsupportedIterableToArray = __webpack_require__(/*! ./unsupportedIterableToArray */ "./node_modules/@babel/runtime/helpers/unsupportedIterableToArray.js");
+
 var nonIterableSpread = __webpack_require__(/*! ./nonIterableSpread */ "./node_modules/@babel/runtime/helpers/nonIterableSpread.js");
 
 function _toConsumableArray(arr) {
-  return arrayWithoutHoles(arr) || iterableToArray(arr) || nonIterableSpread();
+  return arrayWithoutHoles(arr) || iterableToArray(arr) || unsupportedIterableToArray(arr) || nonIterableSpread();
 }
 
 module.exports = _toConsumableArray;
@@ -1024,6 +1055,8 @@ module.exports = _toConsumableArray;
 /***/ (function(module, exports) {
 
 function _typeof(obj) {
+  "@babel/helpers - typeof";
+
   if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
     module.exports = _typeof = function _typeof(obj) {
       return typeof obj;
@@ -1038,6 +1071,28 @@ function _typeof(obj) {
 }
 
 module.exports = _typeof;
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/unsupportedIterableToArray.js":
+/*!***************************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/unsupportedIterableToArray.js ***!
+  \***************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var arrayLikeToArray = __webpack_require__(/*! ./arrayLikeToArray */ "./node_modules/@babel/runtime/helpers/arrayLikeToArray.js");
+
+function _unsupportedIterableToArray(o, minLen) {
+  if (!o) return;
+  if (typeof o === "string") return arrayLikeToArray(o, minLen);
+  var n = Object.prototype.toString.call(o).slice(8, -1);
+  if (n === "Object" && o.constructor) n = o.constructor.name;
+  if (n === "Map" || n === "Set") return Array.from(o);
+  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return arrayLikeToArray(o, minLen);
+}
+
+module.exports = _unsupportedIterableToArray;
 
 /***/ }),
 

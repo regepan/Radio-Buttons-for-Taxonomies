@@ -96,7 +96,6 @@ class Radio_Buttons_For_Taxonomies {
 	 * @since  1.0
 	 */
 	public function __construct() {
-
 		// Include required files.
 		include_once 'inc/class.WordPress_Radio_Taxonomy.php';
 
@@ -136,7 +135,6 @@ class Radio_Buttons_For_Taxonomies {
 		// Multilingualpress support.
 		add_filter( 'mlp_mutually_exclusive_taxonomies', array( $this, 'multilingualpress_support' ) );
 	}
-
 
 	/**
 	 * Delete options table entries ONLY when plugin deactivated AND deleted.
@@ -279,13 +277,41 @@ class Radio_Buttons_For_Taxonomies {
 	public function block_editor_assets(){
 		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
-		wp_enqueue_script( 'radiotax-gutenberg-sidebar', plugins_url( 'js/dist/index' . $suffix . '.js', __FILE__ ), array( 'wp-i18n', 'wp-edit-post', 'wp-element', 'wp-editor', 'wp-components', 'wp-data', 'wp-plugins', 'wp-edit-post', 'wp-api' ), self::$version, true );
+		wp_enqueue_script( 'radiotax-gutenberg-sidebar', plugins_url( 'js/dist/index' . $suffix . '.js', __FILE__ ), array(
+		    'wp-i18n', 'wp-edit-post', 'wp-element', 'wp-editor', 'wp-components', 'wp-data', 'wp-plugins', 'wp-edit-post', 'wp-api'
+        ), self::$version, true );
 
 		$i18n = array( 'radio_taxonomies' => (array) $this->get_options( 'taxonomies' ) );
 		wp_localize_script( 'radiotax-gutenberg-sidebar', 'RB4Tl18n', $i18n );
+		wp_localize_script( 'radiotax-gutenberg-sidebar', 'RB4T_userinfo', $this->getUserInfo() );
 	}
 
-	/**
+	private function getUserInfo() {
+		global $wpdb;
+		$user = wp_get_current_user();
+
+		$query = $wpdb->prepare( "SELECT *
+	FROM        $wpdb->termmeta termmeta
+	INNER JOIN  $wpdb->terms terms ON terms.term_id = termmeta.term_id
+	INNER JOIN  $wpdb->term_taxonomy term_taxonomy ON term_taxonomy.term_id = termmeta.term_id
+	WHERE       termmeta.meta_value = %d
+	", array(
+			$user->ID,
+		) );
+
+		$result = $wpdb->get_row( $query );
+		
+		return array(
+			"isAdministrator" => ( array_search( "administrator", $user->roles ) !== false ) ? true : false,
+			"user_id"         => $user->ID,
+			"user_login"      => $user->user_login,
+			"term_id"         => $result->term_id,
+			"slug"            => $result->slug,
+			"name"            => $result->name,
+		);
+	}
+
+    /**
 	 * Display a Settings link on the main Plugins page
 	 *
 	 * @access public

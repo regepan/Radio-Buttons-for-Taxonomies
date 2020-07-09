@@ -1,0 +1,60 @@
+# Copyright (C) 2020
+# This file is distributed under the same license as the  package.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: "
+"https://wordpress.org/support/plugin/auto-select-taxonomy\n"
+"POT-Creation-Date: 2020-07-09 16:37:57+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2020-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"X-Generator: grunt-wp-i18n 1.0.3\n"
+
+#: auto-select-taxonomy.php:76
+msgid "Cloning this object is forbidden."
+msgstr ""
+
+#: auto-select-taxonomy.php:85
+msgid "Unserializing instances of this class is forbidden."
+msgstr ""
+
+#: auto-select-taxonomy.php:195
+msgid "Auto Select Taxonomy Options Page"
+msgstr ""
+
+#: auto-select-taxonomy.php:195 inc/plugin-options.php:10
+msgid "Auto Select Taxonomy"
+msgstr ""
+
+#: auto-select-taxonomy.php:321
+msgid "Settings"
+msgstr ""
+
+#: auto-select-taxonomy.php:338
+msgid "Donate"
+msgstr ""
+
+#: inc/class.WordPress_Radio_Taxonomy.php:188
+#. translators: %s: add new taxonomy label
+msgid "+ %s"
+msgstr ""
+
+#: inc/plugin-options.php:18
+msgid "Select taxonomies to convert to radio buttons"
+msgstr ""
+
+#: inc/plugin-options.php:44
+msgid "Options"
+msgstr ""
+
+#: inc/plugin-options.php:51
+msgid "Completely remove options on plugin removal"
+msgstr ""
+
+#: inc/plugin-options.php:58
+msgid "Save Changes"
+msgstr ""

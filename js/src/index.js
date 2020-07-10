@@ -6,7 +6,7 @@ import RadioTermSelector from './radio-term-selector';
 function CustomizeTaxonomySelector( OriginalComponent ) {
   return function( props ) {
     var term_id = Number(RB4T_userinfo.term_id);
-    var terms = term_id;
+    var terms = [term_id];
 
     if (props.terms.indexOf(term_id) === -1) {
       props.terms.push(term_id);

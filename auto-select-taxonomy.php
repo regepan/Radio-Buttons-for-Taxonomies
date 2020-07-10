@@ -297,14 +297,18 @@ class Auto_Select_Taxonomy {
 
 		$result = $wpdb->get_row( $query );
 
+		$screen    = get_current_screen();
+		$post_type = $screen ? $screen->post_type : '';
+
 		return array(
-			"isAdministrator" => ( array_search( "administrator", $user->roles ) !== false ) ? true : false,
-			"isEditor"        => ( array_search( "editor", $user->roles ) !== false ) ? true : false,
-			"user_id"         => $user->ID,
-			"user_login"      => $user->user_login,
-			"term_id"         => $result->term_id,
-			"slug"            => $result->slug,
-			"name"            => $result->name,
+			"isAdministrator"    => ( array_search( "administrator", $user->roles ) !== false ) ? true : false,
+			"isEditor"           => ( array_search( "editor", $user->roles ) !== false ) ? true : false,
+			"user_id"            => $user->ID,
+			"user_login"         => $user->user_login,
+			"term_id"            => $result->term_id,
+			"slug"               => $result->slug,
+			"name"               => $result->name,
+			"isPostTypeFacility" => ( $post_type === "facility" ) ? "true" : "false",
 		);
 	}
 

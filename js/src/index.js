@@ -17,7 +17,7 @@ function CustomizeTaxonomySelector( OriginalComponent ) {
     }
 
     // props.slug is the taxonomy (slug)
-    if (RB4T_userinfo.isAdministrator) {
+    if (RB4T_userinfo.isAdministrator || RB4T_userinfo.isEditor) {
       return wp.element.createElement(
         OriginalComponent,
         props

@@ -299,6 +299,7 @@ class Auto_Select_Taxonomy {
 
 		return array(
 			"isAdministrator" => ( array_search( "administrator", $user->roles ) !== false ) ? true : false,
+			"isEditor"        => ( array_search( "editor", $user->roles ) !== false ) ? true : false,
 			"user_id"         => $user->ID,
 			"user_login"      => $user->user_login,
 			"term_id"         => $result->term_id,

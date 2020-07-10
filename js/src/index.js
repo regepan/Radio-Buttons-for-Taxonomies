@@ -6,14 +6,19 @@ import RadioTermSelector from './radio-term-selector';
 function CustomizeTaxonomySelector( OriginalComponent ) {
   return function( props ) {
     var term_id = Number(RB4T_userinfo.term_id);
+    var terms = term_id;
 
     if (props.terms.indexOf(term_id) === -1) {
       props.terms.push(term_id);
 
       // save data via ajax post.
       const { onUpdateTerms, taxonomy } = props;
-      const termId = parseInt( term_id, 10 );
-      onUpdateTerms( [ termId ], taxonomy.rest_base );
+
+      if (RB4T_userinfo.isAdministrator || RB4T_userinfo.isEditor) {
+        terms = props.terms
+      }
+
+      onUpdateTerms( terms , taxonomy.rest_base );
     }
 
     // props.slug is the taxonomy (slug)

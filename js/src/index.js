@@ -48,11 +48,12 @@ function CustomizeTaxonomySelector( OriginalComponent ) {
 
 // console.log(RB4T_userinfo);
 
-if (RB4T_userinfo && RB4T_userinfo.isPostTypeFacility) {
-  wp.hooks.addFilter(
-    'editor.PostTaxonomyType',
-    'RB4T',
-    CustomizeTaxonomySelector
-  );
+if (RB4T_userinfo !== null) {
+  if (RB4T_userinfo.isPostTypeFacility) {
+    wp.hooks.addFilter(
+      'editor.PostTaxonomyType',
+      'RB4T',
+      CustomizeTaxonomySelector
+    );
+  }
 }
-

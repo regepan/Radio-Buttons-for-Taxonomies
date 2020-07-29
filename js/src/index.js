@@ -9,6 +9,7 @@ function CustomizeTaxonomySelector( OriginalComponent ) {
 
     if (RB4Tl18n.radio_taxonomies.indexOf(props.slug) >= 0) {
       var term_id = Number(RB4T_userinfo.term_id);
+
       var terms = [term_id];
 
       if (props.terms.indexOf(term_id) === -1) {
@@ -45,7 +46,9 @@ function CustomizeTaxonomySelector( OriginalComponent ) {
 	}
 };
 
-if (RB4T_userinfo.isPostTypeFacility) {
+// console.log(RB4T_userinfo);
+
+if (RB4T_userinfo && RB4T_userinfo.isPostTypeFacility) {
   wp.hooks.addFilter(
     'editor.PostTaxonomyType',
     'RB4T',
